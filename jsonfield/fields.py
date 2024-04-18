@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.db import models
 from django.db.models.lookups import Exact, IExact, In, Contains, IContains
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import six
 
 from .utils import _resolve_object_path
@@ -70,10 +70,7 @@ class JSONField(models.Field):
 
     def db_type(self, connection):
         if connection.vendor == 'postgresql':
-            # Only do jsonb if in pg 9.4+
-            if connection.pg_version >= 90400:
-                return 'jsonb'
-            return 'text'
+            return 'json'
         if connection.vendor == 'mysql':
             return 'longtext'
         if connection.vendor == 'oracle':
